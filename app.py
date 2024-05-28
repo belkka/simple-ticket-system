@@ -29,7 +29,10 @@ def list_tickets():
 def create_random_ticket():
     import random
     x = random.randint(1, 10000)
-    t = models.Ticket(note=f'here is a random number: {x}')
+    t = models.Ticket(
+        note=f'here is a random number: {x}',
+        status=models.Ticket.Status.PENDING,
+    )
     db.session.add(t)
     db.session.commit()
     return f'Ok, sure, take this: {t!r}'  # TODO: marshmallow

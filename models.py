@@ -1,3 +1,5 @@
+import enum
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -14,5 +16,15 @@ db = SQLAlchemy(model_class=Base)
 
 
 class Ticket(db.Model):
+    class Status(enum.StrEnum):
+        PENDING = 'pending'
+        IN_REVIEW = 'in_review'
+        CLOSED = 'closed'
+
+        # TODO: remove when proper serialization is implemented
+        def __repr__(self):
+            return repr(self.value)
+
     id: Mapped[int] = mapped_column(primary_key=True)
+    status: Mapped[Status]
     note: Mapped[str]
