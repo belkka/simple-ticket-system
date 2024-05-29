@@ -1,6 +1,8 @@
 import enum
 
+import sqlalchemy.orm
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -13,6 +15,11 @@ class Base(DeclarativeBase):
 
 
 db = SQLAlchemy(model_class=Base)
+
+
+class Group(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
 
 
 class Ticket(db.Model):
@@ -28,3 +35,6 @@ class Ticket(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     status: Mapped[Status]
     note: Mapped[str]
+
+    group_id: Mapped[int] = mapped_column(ForeignKey(Group.id))
+    group: Mapped[Group] = sqlalchemy.orm.relationship()
