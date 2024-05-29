@@ -1,19 +1,22 @@
 import flask
-import sqlalchemy.orm
-from flask_sqlalchemy import SQLAlchemy
+import flask_security
+from flask_security.models import fsqla_v3 as fsqla
+
+from .database import db
+from .auth.models import User, Role
 
 
 ticket_system = flask.Flask(__name__)
 ticket_system.config.from_prefixed_env('FLASK')
 
+if ticket_system.debug:
+    from pprint import pprint as print
+    print(dict(ticket_system.config))
 
-class Base(sqlalchemy.orm.DeclarativeBase):
-    def __repr__(self):
-        self.id  # hack
-        ret = dict(self.__dict__)
-        del ret['_sa_instance_state']
-        return repr(ret)
-
-
-db = SQLAlchemy(model_class=Base)
 db.init_app(ticket_system)
+
+ticket_system.security = flask_security.Security(
+    ticket_system,
+    flask_security.SQLAlchemyUserDatastore(db, User, Role),
+)
+

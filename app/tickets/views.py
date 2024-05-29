@@ -1,7 +1,7 @@
 import flask
 from sqlalchemy.sql.expression import func
 
-from app import db
+from ..database import db
 from . import models
 
 

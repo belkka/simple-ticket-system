@@ -1,4 +1,5 @@
 import app.tickets.views
+import app.auth.views
 from app import ticket_system, db
 
 
@@ -6,6 +7,7 @@ from app import ticket_system, db
 @ticket_system.cli.command('db_create_all')
 def db_create_all():
     """Populate an empty database"""
+    import app.auth.models
     from app.tickets.models import Group
 
     with ticket_system.app_context():
@@ -16,3 +18,4 @@ def db_create_all():
 
 
 ticket_system.register_blueprint(app.tickets.views.blueprint)
+ticket_system.register_blueprint(app.auth.views.blueprint)

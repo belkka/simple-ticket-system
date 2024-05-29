@@ -4,7 +4,7 @@ import sqlalchemy.orm
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app import db
+from ..database import db
 
 
 class Group(db.Model):
