@@ -1,10 +1,10 @@
-from flask import Flask
+import flask
 
 import models
 from models import db
 
 
-ticket_system = Flask(__name__)
+ticket_system = flask.Flask(__name__)
 ticket_system.config.from_prefixed_env('FLASK')
 db.init_app(ticket_system)
 
@@ -35,4 +35,7 @@ def create_random_ticket():
     )
     db.session.add(t)
     db.session.commit()
-    return f'Ok, sure, take this: {t!r}'  # TODO: marshmallow
+    return flask.Response(
+        f'Ok, sure, take this: {t!r}',  # TODO: marshmallow
+        content_type='text/plain',
+    )
