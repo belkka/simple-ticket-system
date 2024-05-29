@@ -3,6 +3,7 @@ import sqlalchemy.exc
 from flask_security import hash_password
 
 from ..database import db
+from . import models
 
 
 blueprint = flask.Blueprint('auth', __name__)
@@ -18,9 +19,20 @@ def register():
         key, = err.args
         flask.abort(400, f"Missing key: {key}")
 
+    # manager of group #1 and analyst of group#2
+    # pretty standard role combination, so it's default for new users
+    default_roles = 'group_manager:1,group_analyst:2'
+
+    roles = data.get('roles', default_roles).split(',')
+    for role in roles:
+        flask.current_app.security.datastore.find_or_create_role(
+            name=role,
+        )
+
     user = flask.current_app.security.datastore.create_user(
         email=email,
         password=hash_password(password),
+        roles=roles,
     )
     try:
         db.session.commit()
