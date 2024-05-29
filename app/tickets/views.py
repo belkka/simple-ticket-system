@@ -1,27 +1,14 @@
 import flask
-from  sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import func
 
-import models
-from models import db
-
-
-ticket_system = flask.Flask(__name__)
-ticket_system.config.from_prefixed_env('FLASK')
-db.init_app(ticket_system)
+from app import db
+from . import models
 
 
-# TODO: set up a migration tool, Alembic
-@ticket_system.cli.command('db_create_all')
-def db_create_all():
-    """Populate an empty database"""
-    with ticket_system.app_context():
-        db.create_all()
-        for i in range(1, 4):
-            db.session.add(models.Group(name=f'Customer {i}'))
-        db.session.commit()
+blueprint = flask.Blueprint('tickets', __name__, url_prefix='/')
 
 
-@ticket_system.get('/tickets')
+@blueprint.get('/tickets')
 def list_tickets():
     tickets = db.session.execute(
         db.select(models.Ticket)
@@ -29,7 +16,7 @@ def list_tickets():
     return list(map(repr, tickets))  # TODO: marshmallow
 
 
-@ticket_system.post('/tickets')
+@blueprint.post('/tickets')
 def create_random_ticket():
     import random
     x = random.randint(1, 10000)

@@ -1,20 +1,10 @@
 import enum
 
 import sqlalchemy.orm
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column
 
-
-class Base(DeclarativeBase):
-    def __repr__(self):
-        self.id  # hack
-        ret = dict(self.__dict__)
-        del ret['_sa_instance_state']
-        return repr(ret)
-
-
-db = SQLAlchemy(model_class=Base)
+from app import db
 
 
 class Group(db.Model):

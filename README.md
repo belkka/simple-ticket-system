@@ -18,8 +18,6 @@ Create tables in empty db (no migrations, what a shame!):
 
 Run API (in virtualenv):
 
-    flask --app app:ticket_system run
-    # or
     flask run  # inside `poetry shell`
     # or
     poetry run flask run
