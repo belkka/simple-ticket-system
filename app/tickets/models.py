@@ -9,7 +9,7 @@ from app import db
 
 class Group(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
+    name: Mapped[str] = mapped_column(unique=True)
 
 
 class Ticket(db.Model):
