@@ -41,4 +41,3 @@ def create_app():
     ticket_system.register_blueprint(app.auth.views.blueprint)
 
     return ticket_system
-

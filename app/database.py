@@ -11,4 +11,3 @@ class Base(sqlalchemy.orm.DeclarativeBase):
 
 
 db = SQLAlchemy(model_class=Base)
-
